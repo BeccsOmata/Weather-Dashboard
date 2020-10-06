@@ -10,6 +10,8 @@ If the city is recognized, it will populate the City/Country in a list underneat
  - UV Index
  - 5-Day Forecast
 
+If the city is not recognized, a prompt will pop up noting that the city name plus a country code separated by a comma should be used.
+
 See screencap here:
 https://github.com/BeccsOmata/Weather-Dashboard/blob/main/assets/images/screencap.jpg
 
