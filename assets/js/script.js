@@ -115,7 +115,7 @@ let dateString = (unixTime => {
 })
 
 let showValuesOnPage = (() => {
-    let searchString = cityName + ', ' + countryCode;
+    let searchString = cityName; // If you wanted Country to show, add <  + ', ' + countryCode >
     $('#city-name').text(searchString + ' (' + dateString(Date.now()) + ')');
     addToSearchHistory(searchString, Date.now());
     renderSearchHistory();
