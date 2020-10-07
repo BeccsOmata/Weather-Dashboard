@@ -15,6 +15,7 @@
     flex: 0 0 20%;
     max-width: 20%;
 }
+
 @media (min-width: 540px) {
     .col-sm-2dot4 {
         -webkit-box-flex: 0;
