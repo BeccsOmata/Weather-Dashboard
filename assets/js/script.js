@@ -129,32 +129,32 @@ let showValuesOnPage = (() => {
         ((tempInK - 273.15) * 9/5 + 32).toFixed(2) + ' ' + String.fromCharCode(176) + 'F)');
     $('#hum-data').text('Humidity: ' + humidity + '%');
     $('#wind-data').text('Wind Speed: ' + windSpeed + ' MPH');
-    //$('#uvi-data').text('UV Index: ' + uvIndex);
+    $('#uvi-data').text('UV Index: ' + uvIndex);
 });
 
-function returnUVIndex(coordinates) {
-    let queryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${coordinates.lat}&lon=${coordinates.lon}&APPID=${apiKey}`;
+//function returnUVIndex(coordinates) {
+    //let queryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}`;
 
-    $.get(queryURL).then(function(response){
-        let currUVIndex = response.value;
-        let uvSeverity = "green";
-        let textColour = "white"
+    //$.get(queryURL).then(function(response){
+        //let currUVIndex = response.value;
+        //let uvSeverity = "green";
+        //let textColour = "white"
         //Change UV background based on severity
         //Also change text colour for readability
-        if (currUVIndex >= 11) {
-            uvSeverity = "purple";
-        } else if (currUVIndex >= 8) {
-            uvSeverity = "red";
-        } else if (currUVIndex >= 6) {
-            uvSeverity = "orange";
-            textColour = "black"
-        } else if (currUVIndex >= 3) {
-            uvSeverity = "yellow";
-            textColour = "black"
-        }
-        currWeatherDiv.append(`<p>UV Index: <span class="text-${textColour} uvPadding" style="background-color: ${uvSeverity};">${currUVIndex}</span></p>`);
-    })
-}
+       // if (currUVIndex >= 11) {
+            //uvSeverity = "purple";
+        //} else if (currUVIndex >= 8) {
+            //uvSeverity = "red";
+        //} else if (currUVIndex >= 6) {
+            //uvSeverity = "orange";
+            //textColour = "black"
+        //} else if (currUVIndex >= 3) {
+            //uvSeverity = "yellow";
+            //textColour = "black"
+        //}
+        //currWeatherDiv.append(`<p>UV Index: <span class="text-${textColor} uvPadding" style="background-color: ${uvSeverity};">${currUVIndex}</span></p>`);
+    //})
+//}
 
 //uvIndexColor = function() {
     //var uvIndex = [0];
