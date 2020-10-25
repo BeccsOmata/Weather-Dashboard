@@ -28,14 +28,13 @@ $(document).ready(() => {
 const renderSearchHistory = () => {
     let searchHx = JSON.parse(localStorage.getItem('searchHistory'));
     if(searchHx) {
-        arrayLength = searchHx.length;
-        for(let i = 0; i < arrayLength; ++i) {
+        for(let i = 0; i < searchHx.length; ++i) {
         $(`#row${i}`).html(`<td><button class="recent btn btn-link p-0 text-muted">${searchHx[i].searchString}</button></td>`);
         }
     }
 }
 
-$( "table" ).on( "click", "button.recent", function() {
+$( "table" ).on( "click", "button.recent", function(event) {
     event.preventDefault();
     getWeatherInformation($(this).text());
 });
@@ -44,7 +43,7 @@ let initializeLocalStorage = (() => {
     localStorage.setItem('searchHistory', '[]');
 });
 
-$('#city-search').click(() => {
+$('#city-search').click((event) => {
     event.preventDefault();
     let citySearchString = validatedSearchString($('input').attr("placeholder", "City Name").val());
     getWeatherInformation(citySearchString);
@@ -64,7 +63,7 @@ let getWeatherInformation = (citySearchString => {
         url: weatherInfoRequestPrefix + cityQuery + apiKey,
         method: "GET",
         error: (err => {
-        alert("City Not Found. Please check the spelling, or enter a city name with a country code, separated by a comma")
+            alert("City Not Found. Please check the spelling, or enter a city name with a country code, separated by a comma")
         return;
         })
     })
@@ -84,10 +83,7 @@ let getWeatherInformation = (citySearchString => {
         method: "GET"
         })
         .then(response => {
-        uvIndex = response.value;
-        })
-        .then(() => {
-        showValuesOnPage();
+            showValuesOnPage(response.value);
         })
     })
 
@@ -118,8 +114,8 @@ let dateString = (unixTime => {
     return moment(unixTime).format('MM/DD/YYYY');
 })
 
-let showValuesOnPage = (() => {
-    let searchString = cityName; // If you wanted Country to show, add <  + ', ' + countryCode >
+let showValuesOnPage = ((uv) => {
+    let searchString = cityName  + ', ' + countryCode;
     $('#city-name').text(searchString + ' (' + dateString(Date.now()) + ')');
     addToSearchHistory(searchString, Date.now());
     renderSearchHistory();
@@ -129,8 +125,20 @@ let showValuesOnPage = (() => {
         ((tempInK - 273.15) * 9/5 + 32).toFixed(2) + ' ' + String.fromCharCode(176) + 'F)');
     $('#hum-data').text('Humidity: ' + humidity + '%');
     $('#wind-data').text('Wind Speed: ' + windSpeed + ' MPH');
-    $('#uvi-data').text('UV Index: ' + uvIndex);
+    returnUVIndex(uv);
 });
+
+function returnUVIndex(uvi) {
+    let uvSeverity = "";
+            if (uvi >= 8) {
+            uvSeverity = "severe";
+        } else if (uvi >= 6) {
+            uvSeverity = "moderate";
+        } else if (uvi < 6) {
+            uvSeverity = "favorable";
+        }
+        $("#uvi-data").html("UV Index: <span class='"+ uvSeverity + "'>" + uvi + "</span>");
+}
 
 //function returnUVIndex(coordinates) {
     //let queryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}`;
@@ -138,7 +146,7 @@ let showValuesOnPage = (() => {
     //$.get(queryURL).then(function(response){
         //let currUVIndex = response.value;
         //let uvSeverity = "green";
-        //let textColour = "white"
+        //let textColor = "white"
         //Change UV background based on severity
         //Also change text colour for readability
        // if (currUVIndex >= 11) {
@@ -147,10 +155,10 @@ let showValuesOnPage = (() => {
             //uvSeverity = "red";
         //} else if (currUVIndex >= 6) {
             //uvSeverity = "orange";
-            //textColour = "black"
+            //textColor = "black"
         //} else if (currUVIndex >= 3) {
             //uvSeverity = "yellow";
-            //textColour = "black"
+            //textColor = "black"
         //}
         //currWeatherDiv.append(`<p>UV Index: <span class="text-${textColor} uvPadding" style="background-color: ${uvSeverity};">${currUVIndex}</span></p>`);
     //})
